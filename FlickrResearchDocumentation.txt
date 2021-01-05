@@ -1,0 +1,45 @@
+IMPORTS
+The FlickrResearch class is designed to be opened and run with a Python IDE, it should work fine with Spyder or Pycharm.
+Three imports are needed:
+Json- (JavaScript Object Notation)
+Pandas- Python dataFrame tool
+Flickrapi- python interface for the Flickr API, must be downloaded from PIPY, author Steven Struval
+JSON and Pandas should already be available in the python library. 
+
+DOCUMENTATION
+Documentation about the Flickr API can be found at: https://www.flickr.com/services/api/
+The two methods used by FlickrResearch are flickr.photos.search: https://www.flickr.com/services/api/flickr.photos.search.html
+And flickr.people.getinfo: 
+https://www.flickr.com/services/api/flickr.people.getInfo.html
+FlickrResearch utilizes and encapsulates the functionality of pandas. The full documentation for pandas can be found at:
+https://pandas.pydata.org/pandas-docs/stable/reference/frame.html#reindexing-selection-label-manipulation
+
+CODE EXAMPLES
+
+creating a new flickrResearch object with given search Parameters
+myapiCall = FlickrResearch('2019-01-01', '2019-12-31', '-71.004,42.902,-66.35,47.492','1', 'geo,date_taken,tags, owner_name')
+                            mindate        maxdate          bbox lat/lon cord.       hasGeo           extras
+
+
+Creating a new dataframe using creatDataFrame, and writing the dataFrame to a csv
+myapiCall = FlickrResearch('2019-01-01', '2019-12-31', '-71.004,42.902,-66.35,47.492','1', 'geo,date_taken,tags, owner_name')
+MyNewDf = myapiCall.createDataFrame()
+myapiCall.dataFrameToCsv(MyNewDf, 'myFileName.csv')
+
+
+Converting a csv to a dataframe
+myNewDataframe = pd.read_csv('myFileName.csv')
+
+
+Converting a csv to a datframe and passing into the appendUserInfo function, dropping all rows that have 'none' for a user location, and write out to a csv
+myapiCall = FlickrResearch('2019-01-01', '2019-12-31', '-71.004,42.902,-66.35,47.492','1', 'geo,date_taken,tags, owner_name')
+myDataframe = pd.read_csv('myFileName.csv')
+myLocDf = myapiCall.appendUserInfo(myDataframe)
+myCleanedLoc = myapiCall.dropNone(myLocDf)
+myapiCall.dataFrameToCsv(myCleanedLoc,"myFileName")
+
+NOTES
+The defaut number of pages used to create a new dataFrame is 16. If you want less pages, this parameter can be altered inside the createDataFrame function at line 57. 
+Change the numer of iterations for the for loop.
+
+The default extras included are geo, date_taken, tags. Any additional categories will require a column addition to the dataframe at line 63-65
