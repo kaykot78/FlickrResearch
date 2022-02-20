@@ -1,5 +1,10 @@
 import pandas as pd
 
+'''
+Part of Flickr Research for GIS researchers
+BY: Colleen Metcalf
+BOG has methods for tag analysis
+'''
 
 
 
@@ -7,8 +12,7 @@ import pandas as pd
 class BOG:
     
     '''Output is for mapping individual tags
-    get the owner, and latitude/longitude coordinates for each instance of a tag. Takes in a csv that 
-    contains output from tags_to_BOG. Puts out a dataframe.'''
+    get the owner, and latitude/longitude coordinates for each instance of a tag. Puts out a dataframe.'''
     def get_tag_info(df, tag):
         
         tagsList = [] # list of tags
@@ -33,7 +37,7 @@ class BOG:
             
             #go through the tag list, pull out the info for the specific tag
             for tags in tagsList:
-                if tags == tag:
+                if tags == tag.lower():
                     tag_tuple = (tags, owner, lat,lon, locCode)
                     tag_tuple_list.append(tag_tuple)
                     
@@ -116,45 +120,12 @@ class BOG:
         
             
         
-                    
-    '''only makes a row for a user, latitude. longitude combination once, if the users has multiple photos they
-    they are recorded in a column'''
-    def userDensity( df):
-        userTuple = ()
-        # create the dictionary with a dummy entry
-        owner = 'test'
-        lat =  44.127732
-        lon = -68.8749
+   
     
-        userDict = {}
-        #                                                     loc code
-                                   #lat        lon      owner       photo count
-        userDict[owner,lat,lon] =[ 44.127732, -68.8749, 'test', 'l', 0]
+    
         
-        #itterate through the dataframe adding an entry to the dictionary or to the entry count
-        for row in df.itertuples(index=False):
-            lat = row[3]               
-            lon = row[4]
-            owner = str(row[5])
-            locCode = str(row[10])
-            userTuple = (owner,lat,lon)
-            
-            # if usertuple already in the dictionary, add to the photo count
-            if userTuple in userDict:
-                userDict[userTuple] [4] += 1 #add to tag count
-            #if usertuple not in the dictionary, add it 
-            else:
-                userDict[userTuple] = [lat,lon, owner, locCode,1]
-                
-        #convert to dataframe           
-        tagsDf = pd.DataFrame.from_dict(userDict ,orient = 'index', columns = ['latitude', 'longitude', 'owner', ' location code',
-                                                        'photo count']  )  
+
         
-        return tagsDf
-        
-        
-                
-     
     
     
                     
@@ -167,8 +138,8 @@ if __name__ == '__main__':
     
     #read in a csv, call get_tag_info, output the results to a csv
     #DF = pd.read_csv('Faroe2021_Loc_finished.csv')
-    #DF2 = BOG.get_tag_info(DF,'faroeislands')
-    #F2.to_csv('FaroeTagsTest.csv')
+    #DF2 = BOG.get_tag_info(DF,'Faroeislands')
+    #DF2.to_csv('FaroeTagsTest.csv')
    
     
     
@@ -176,6 +147,9 @@ if __name__ == '__main__':
     #DF = pd.read_csv('Faroe2021_Loc_finished.csv')
     #DF2 = BOG.tags_to_BOG(DF)
     #DF2.to_csv('FaroeTest.csv')
+    
+    
+    
     
     
    
